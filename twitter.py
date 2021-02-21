@@ -1,4 +1,6 @@
-import urllib.request, urllib.parse, urllib.error
+import urllib.request
+import urllib.parse
+import urllib.error
 import twurl
 import json
 import ssl
@@ -11,7 +13,11 @@ import os.path
 TWITTER_URL = 'https://api.twitter.com/1.1/friends/list.json'
 TWITTER_URL_2 = 'https://api.twitter.com/1.1/users/show.json'
 
+
 def infos_about_friends(twitter_account):
+    """
+    This function returns informstion about user`s friends and their locations.
+    """
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
@@ -26,10 +32,12 @@ def infos_about_friends(twitter_account):
             tup = friend['screen_name'], friend['location']
             lst.append(tup)
     return lst
-# print(infos_about_friends())
 
 
 def infos_about_user(twitter_account):
+    """
+    This function returns informstion about user location.
+    """
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
@@ -38,10 +46,12 @@ def infos_about_user(twitter_account):
     data = connection.read().decode()
     js = json.loads(data)
     return js['screen_name'], js['location']
-# print(infos_about_user())
+
 
 def main(account):
-    # account = input('Enter Twitter Account:')
+    """
+    This function creates the map.
+    """
     lst_of_friends = infos_about_friends(account)
     user = infos_about_user(account)
     diction = geo.create_dictionary(lst_of_friends)
@@ -51,6 +61,3 @@ def main(account):
     url = 'file://' + path
     webbrowser.open(url)
     return html
-# print(main())
-# print(infos_about_friends())
-# print(location_and_names(read_json_return_data(infos_about_friends())))
